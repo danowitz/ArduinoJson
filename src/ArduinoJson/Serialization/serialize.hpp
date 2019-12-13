@@ -24,8 +24,8 @@ size_t serialize(const TSource &source, TDestination &destination) {
 }
 
 template <template <typename> class TSerializer, typename TSource>
-size_t serialize(const TSource &source, char *buffer, size_t bufferSize) {
-  StaticStringWriter writer(buffer, bufferSize);
+size_t serialize(const TSource &source, void *buffer, size_t bufferSize) {
+  StaticStringWriter writer(reinterpret_cast<char*>(buffer), bufferSize);
   return doSerialize<TSerializer>(source, writer);
 }
 
