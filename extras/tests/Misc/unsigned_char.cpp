@@ -28,6 +28,17 @@ TEST_CASE("unsigned char[]") {
     REQUIRE(err == DeserializationError::Ok);
   }
 
+  SECTION("serializeMsgPack(unsigned char[])") {
+    unsigned char buffer[32];
+    StaticJsonDocument<JSON_OBJECT_SIZE(2)> doc;
+    doc["hello"] = "world";
+
+    size_t n = serializeMsgPack(doc, buffer);
+
+    REQUIRE(n == 13);
+    REQUIRE(memcmp(buffer, "\x81\xA5hello\xA5world", 13) == 0);
+  }
+
   SECTION("serializeMsgPack(unsigned char*)") {
     unsigned char buffer[32];
     StaticJsonDocument<JSON_OBJECT_SIZE(2)> doc;
