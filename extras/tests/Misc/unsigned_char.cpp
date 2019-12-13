@@ -50,6 +50,28 @@ TEST_CASE("unsigned char[]") {
     REQUIRE(memcmp(buffer, "\x81\xA5hello\xA5world", 13) == 0);
   }
 
+  SECTION("serializeJson(unsigned char[])") {
+    unsigned char buffer[32];
+    StaticJsonDocument<JSON_OBJECT_SIZE(2)> doc;
+    doc["hello"] = "world";
+
+    size_t n = serializeJson(doc, buffer);
+
+    REQUIRE(n == 17);
+    REQUIRE(memcmp(buffer, "{\"hello\":\"world\"}", n) == 0);
+  }
+
+  SECTION("serializeJson(unsigned char*)") {
+    unsigned char buffer[32];
+    StaticJsonDocument<JSON_OBJECT_SIZE(2)> doc;
+    doc["hello"] = "world";
+
+    size_t n = serializeJson(doc, buffer, sizeof(buffer));
+
+    REQUIRE(n == 17);
+    REQUIRE(memcmp(buffer, "{\"hello\":\"world\"}", n) == 0);
+  }
+
   SECTION("JsonVariant") {
     DynamicJsonDocument doc(4096);
 
